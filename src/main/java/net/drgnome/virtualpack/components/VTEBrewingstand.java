@@ -28,36 +28,31 @@ public class VTEBrewingstand extends TileEntityBrewingStand
         link = 0;
         myBrewTime = 0.0D;
         brewTime = 0;
-        brewSpeed = 1.0D;
+        brewSpeed = 2.0D;
         lastCheck = 0;
     }
     
     // Read from save
     public VTEBrewingstand(VPack vpack, String data[])
     {
-        this(vpack);
-        // Get our items
-        for(int i = 0; i < Util.min(data.length, items.length); i++)
-        {
-            items[i] = Util.stringToItemStack(data[i]);
-        }
-        // And the times
-        myBrewTime = Util.tryParse(data[4], myBrewTime);
-        brewTime = Util.floor(myBrewTime);
-        link = Util.tryParse(data[5], link);
-        brewSpeed = getBrewSpeed(items[3]);
+      this.vpack = vpack;
+      link = 0;
+      myBrewTime = 0.0D;
+      brewTime = 0;
+      brewSpeed = 2.0D;
+      lastCheck = 0;
     }
     
     public String[] save()
     {
-        ArrayList<String> list = new ArrayList<String>();
-        for(int i = 0; i < 4; i++)
-        {
-            list.add(Util.itemStackToString(items[i]));
-        }
-        list.add(Double.toString(myBrewTime));
-        list.add(Integer.toString(link));
-        return list.toArray(new String[0]);
+//        ArrayList<String> list = new ArrayList<String>();
+//        for(int i = 0; i < 4; i++)
+//        {
+//            list.add(Util.itemStackToString(items[i]));
+//        }
+//        list.add(Double.toString(myBrewTime));
+//        list.add(Integer.toString(link));
+//        return list.toArray(new String[0]);
     }
     
     // For compatibility

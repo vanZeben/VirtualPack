@@ -9,6 +9,7 @@ import net.minecraft.server.v#MC_VERSION#.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.craftbukkit.v#MC_VERSION#.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.*;
 import net.drgnome.virtualpack.VPack;
 import net.drgnome.virtualpack.util.*;
 
@@ -20,8 +21,8 @@ public class VTEFurnace extends TileEntityFurnace
     private ItemStack[] contents = new ItemStack[3];
     public int link = 0;
     // For custom stuff
-    private double burnSpeed = 1D;
-    private double meltSpeed = 1D;
+    private double burnSpeed = 2D;
+    private double meltSpeed = 2D;
     // I'm internally using "myCookTime" to not lose any precision, but for displaying the progress I still have to use "cookTime"
     private double myCookTime = 0D;
     // Call me paranoid, but this has to be checked
@@ -36,42 +37,33 @@ public class VTEFurnace extends TileEntityFurnace
         cookTime = 0;
         burnTime = 0;
         ticksForCurrentFuel = 0;
+        contents[1] = new ItemStack(Material.COAL, 1);
     }
     
     // Read from save
     public VTEFurnace(VPack vpack, String data[])
     {
-        this(vpack);
-        // Where to stop?
-        for(int i = 0; i < Util.min(data.length, contents.length); i++)
-        {
-            contents[i] = Util.stringToItemStack(data[i]);
-        }
-        lastID = contents[0] == null ? 0 : contents[0].id;
-        // If the data array is long enough, we try to parse its entry, and if it's too short or the parsing fails, we'll leave it as it is.
-        burnTime = Util.tryParse(data[3], burnTime);
-        ticksForCurrentFuel = Util.tryParse(data[4], ticksForCurrentFuel);
-        myCookTime = Util.tryParse(data[5], myCookTime);
-        cookTime = Util.round(myCookTime);
-        link = Util.tryParse(data[6], link);
-        burnSpeed = Util.tryParse(data[7], getBurnSpeed(contents[1]));
-        meltSpeed = getMeltSpeed(contents[0]); // Note to self: No need to save this
+      this.vpack = vpack;
+      cookTime = 0;
+      burnTime = 0;
+      ticksForCurrentFuel = 0;
+      contents[1] = new ItemStack(Material.COAL, 1);
     }
     
     public String[] save()
     {
-        ArrayList<String> list = new ArrayList<String>();
-        for(int i = 0; i < 3; i++)
-        {
-            list.add(Util.itemStackToString(contents[i]));
-        }
-        list.add(Integer.toString(burnTime));
-        list.add(Integer.toString(ticksForCurrentFuel));
-        list.add(Double.toString(myCookTime));
-        list.add(Integer.toString(link));
-        // I save this now, because you could lose burn speed if it's the last fuel item and the server gets restartet
-        list.add(Double.toString(burnSpeed));
-        return list.toArray(new String[0]);
+//        ArrayList<String> list = new ArrayList<String>();
+//        for(int i = 0; i < 3; i++)
+//        {
+//            list.add(Util.itemStackToString(contents[i]));
+//        }
+//        list.add(Integer.toString(burnTime));
+//        list.add(Integer.toString(ticksForCurrentFuel));
+//        list.add(Double.toString(myCookTime));
+//        list.add(Integer.toString(link));
+//        // I save this now, because you could lose burn speed if it's the last fuel item and the server gets restartet
+//        list.add(Double.toString(burnSpeed));
+//        return list.toArray(new String[0]);
     }
     
     // For compatibility
@@ -101,20 +93,20 @@ public class VTEFurnace extends TileEntityFurnace
             // Before we remove the item: how fast does it burn?
             burnSpeed = getBurnSpeed(contents[1]);
             // If it's a container item (lava bucket), we only consume its contents (not like evil Notch!)
-            if(Item.byId[contents[1].id].#FIELD_ITEM_1#()) // Derpnote
-            {
-                contents[1] = new ItemStack(Item.byId[contents[1].id].#FIELD_ITEM_2#());  // Derpnote
-            }
-            // If it's not a container, consume it! Om nom nom nom!
-            else
-            {
-                contents[1].count--;
-                // Let 0 be null
-                if(contents[1].count <= 0)
-                {
-                    contents[1] = null;
-                }
-            }
+//            if(Item.byId[contents[1].id].#FIELD_ITEM_1#()) // Derpnote
+//            {
+//                contents[1] = new ItemStack(Item.byId[contents[1].id].#FIELD_ITEM_2#());  // Derpnote
+//            }
+//            // If it's not a container, consume it! Om nom nom nom!
+//            else
+//            {
+//                contents[1].count--;
+//                // Let 0 be null
+//                if(contents[1].count <= 0)
+//                {
+//                    contents[1] = null;
+//                }
+//            }
         }
         // Now, burning?
         if(isBurning())
