@@ -37,7 +37,7 @@ public class VTEFurnace extends TileEntityFurnace
         cookTime = 0;
         burnTime = 0;
         ticksForCurrentFuel = 0;
-        contents[1] = new ItemStack(Material.COAL, 1);
+        contents[1] = new ItemStack(263, 1, 1);
     }
     
     // Read from save
@@ -47,23 +47,23 @@ public class VTEFurnace extends TileEntityFurnace
       cookTime = 0;
       burnTime = 0;
       ticksForCurrentFuel = 0;
-      contents[1] = new ItemStack(Material.COAL, 1);
+      contents[1] = new ItemStack(263, 1, 1);
     }
     
     public String[] save()
     {
-//        ArrayList<String> list = new ArrayList<String>();
-//        for(int i = 0; i < 3; i++)
-//        {
-//            list.add(Util.itemStackToString(contents[i]));
-//        }
-//        list.add(Integer.toString(burnTime));
-//        list.add(Integer.toString(ticksForCurrentFuel));
-//        list.add(Double.toString(myCookTime));
-//        list.add(Integer.toString(link));
-//        // I save this now, because you could lose burn speed if it's the last fuel item and the server gets restartet
-//        list.add(Double.toString(burnSpeed));
-//        return list.toArray(new String[0]);
+        ArrayList<String> list = new ArrayList<String>();
+        for(int i = 0; i < 3; i++)
+        {
+            list.add(Util.itemStackToString(contents[i]));
+        }
+        list.add(Integer.toString(burnTime));
+        list.add(Integer.toString(ticksForCurrentFuel));
+        list.add(Double.toString(myCookTime));
+        list.add(Integer.toString(link));
+        // I save this now, because you could lose burn speed if it's the last fuel item and the server gets restartet
+        list.add(Double.toString(burnSpeed));
+        return list.toArray(new String[0]);
     }
     
     // For compatibility
@@ -115,7 +115,7 @@ public class VTEFurnace extends TileEntityFurnace
             burnTime -= ticks;
             // I'm using a double here because of the custom recipes.
             // The faster this fuel burns and the faster the recipe melts, the faster we're done
-            myCookTime += burnSpeed * meltSpeed * ((double)ticks);
+            myCookTime += ((burnSpeed * meltSpeed) * 2D) * ((double)ticks);
             // Finished burning?
             while(myCookTime >= 200.0D)
             {

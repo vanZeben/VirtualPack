@@ -45,14 +45,14 @@ public class VTEBrewingstand extends TileEntityBrewingStand
     
     public String[] save()
     {
-//        ArrayList<String> list = new ArrayList<String>();
-//        for(int i = 0; i < 4; i++)
-//        {
-//            list.add(Util.itemStackToString(items[i]));
-//        }
-//        list.add(Double.toString(myBrewTime));
-//        list.add(Integer.toString(link));
-//        return list.toArray(new String[0]);
+        ArrayList<String> list = new ArrayList<String>();
+        for(int i = 0; i < 4; i++)
+        {
+            list.add(Util.itemStackToString(items[i]));
+        }
+        list.add(Double.toString(myBrewTime));
+        list.add(Integer.toString(link));
+        return list.toArray(new String[0]);
     }
     
     // For compatibility
@@ -77,7 +77,7 @@ public class VTEBrewingstand extends TileEntityBrewingStand
         // Are we brewing?
         if(canBrew() && (myBrewTime > 0.0D))
         {
-            myBrewTime -= brewSpeed * ((double)ticks);
+            myBrewTime -= (brewSpeed * 2D) * ((double)ticks);
             // Are we done?
             if(myBrewTime <= 0.0D)
             {
